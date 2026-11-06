@@ -1,0 +1,29 @@
+server:
+  port: 8080
+  mode: debug   # debug / release
+
+database:
+  # 生产环境使用 MySQL 8（推荐）：
+  # driver: mysql
+  # dsn: "root:yourpassword@tcp(127.0.0.1:3306)/webmailer?charset=utf8mb4&parseTime=True&loc=Local"
+  # 本地演示可使用 SQLite（免安装）：
+  driver: sqlite
+  dsn: "webmailer.db"
+
+jwt:
+  secret: "please-change-this-secret-in-production"
+  expire_hours: 24
+
+push:
+  require_phone: true          # 第三方推送 phone 是否必填
+  max_body_size_bytes: 1048576 # 单次请求体上限 1MB
+
+mail:
+  worker_count: 3        # 发送 Worker 并发数（可配置，避免发送压力过大）
+  poll_interval_sec: 5   # 任务轮询间隔
+  retry_max: 3           # 首次失败后额外重试次数（共 4 次尝试）
+  retry_backoff_sec: 60  # 重试退避基数（按尝试次数线性递增：60s/120s/180s）
+  send_timeout_sec: 30
+
+app:
+  base_url: "http://127.0.0.1:8080"  # 对外展示的接口地址前缀，生产改为实际域名
