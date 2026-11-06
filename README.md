@@ -25,7 +25,7 @@
 # 后端（SQLite 模式，首次启动自动建库并创建管理员）
 cd backend
 go run .
-# 服务运行在 http://127.0.0.1:8080
+# 服务运行在 http://127.0.0.1:8806
 
 # 前端（开发模式）
 cd frontend
@@ -59,12 +59,12 @@ CGO_ENABLED=0 go build -o web-mailer
 ./web-mailer
 ```
 
-单端口部署：静态页面 + API 同在 8080。
+单端口部署：静态页面 + API 同在 8806。
 
 ## 第三方推送
 
 ```bash
-curl -X POST http://127.0.0.1:8080/api/v1/push/{interface_key} \
+curl -X POST http://127.0.0.1:8806/api/v1/push/{interface_key} \
   -H "Content-Type: application/json" \
   -d '{"name":"张三","phone":"13800000000","cityLocation":"重庆-重庆","clueSource":"本地推"}'
 ```

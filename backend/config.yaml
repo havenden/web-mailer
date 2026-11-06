@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8806
   mode: debug   # debug / release
 
 database:
@@ -26,4 +26,4 @@ mail:
   send_timeout_sec: 30
 
 app:
-  base_url: "http://127.0.0.1:8080"  # 对外展示的接口地址前缀，生产改为实际域名
+  base_url: "http://127.0.0.1:8806"  # 对外展示的接口地址前缀，生产改为实际域名
