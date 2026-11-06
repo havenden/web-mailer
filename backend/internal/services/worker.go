@@ -225,11 +225,18 @@ func RawJSONHTML(raw string) string {
 	if raw == "" {
 		return ""
 	}
-	pretty := raw
-	var buf bytes.Buffer
-	if err := json.Indent(&buf, []byte(raw), "", "  "); err == nil {
-		pretty = buf.String()
+	// 解码后重新格式化，保留中文等 Unicode 字符不被转义
+	var val interface{}
+	if err := json.Unmarshal([]byte(raw), &val); err != nil {
+		esc := html.EscapeString(raw)
+		return strings.ReplaceAll(esc, "\n", "<br>")
 	}
+	var buf bytes.Buffer
+	enc := json.NewEncoder(&buf)
+	enc.SetIndent("", "  ")
+	enc.SetEscapeHTML(false)
+	enc.Encode(val)
+	pretty := strings.TrimRight(buf.String(), "\n")
 	esc := html.EscapeString(pretty)
 	return strings.ReplaceAll(esc, "\n", "<br>")
 }
