@@ -23,6 +23,9 @@
             <a-button size="small" type="link" @click="view(record)">查看</a-button>
             <a-button size="small" type="link" @click="copyRow(record)">复制</a-button>
             <a-button v-if="record.status === 4 || record.status === 3" size="small" type="link" danger @click="retry(record)">重发</a-button>
+            <a-popconfirm title="确认删除该邮件记录？" @confirm="del(record)">
+              <a-button size="small" type="link" danger>删除</a-button>
+            </a-popconfirm>
           </a-space>
         </template>
       </template>
@@ -148,6 +151,12 @@ async function copyRow(row) {
   if (!text) { message.warning('暂无可复制内容'); return }
   await copyToClipboard(text)
   message.success('已复制：序号 → 资质所属地')
+}
+
+async function del(row) {
+  await api.delete('/mail-records/' + row.id)
+  message.success('已删除')
+  load()
 }
 
 onMounted(async () => {

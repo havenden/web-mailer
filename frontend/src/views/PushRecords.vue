@@ -20,7 +20,12 @@
           {{ fmt(record.created_at) }}
         </template>
         <template v-if="column.dataIndex === 'action'">
-          <a-button size="small" type="link" @click="view(record)">详情</a-button>
+          <a-space>
+            <a-button size="small" type="link" @click="view(record)">详情</a-button>
+            <a-popconfirm title="确认删除该接收记录？关联的邮件任务也将一并删除。" @confirm="del(record)">
+              <a-button size="small" type="link" danger>删除</a-button>
+            </a-popconfirm>
+          </a-space>
         </template>
       </template>
     </a-table>
@@ -138,6 +143,12 @@ async function copyMail(row) {
   if (!d.text) { message.warning('暂无可复制内容'); return }
   await copyToClipboard(d.text)
   message.success('已复制：序号 → 资质所属地')
+}
+
+async function del(row) {
+  await api.delete('/push-records/' + row.id)
+  message.success('已删除')
+  load()
 }
 
 onMounted(async () => {

@@ -97,10 +97,12 @@ func main() {
 
 			authed.GET("/push-records", handlers.ListPushRecords)
 			authed.GET("/push-records/:id", handlers.GetPushRecord)
+			authed.DELETE("/push-records/:id", handlers.DeletePushRecord)
 			authed.GET("/mail-records", handlers.ListMailRecords)
 			authed.GET("/mail-records/:id", handlers.GetMailRecord)
 			authed.GET("/mail-records/:id/copy-text", handlers.GetMailRecordCopyText)
 			authed.POST("/mail-records/:id/retry", handlers.RetryMailRecord)
+			authed.DELETE("/mail-records/:id", handlers.DeleteMailRecord)
 
 			authed.GET("/dashboard", handlers.Dashboard)
 			authed.GET("/logs", handlers.ListOperationLogs)

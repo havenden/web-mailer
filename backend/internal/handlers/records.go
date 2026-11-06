@@ -407,3 +407,28 @@ func ListLoginLogs(c *gin.Context) {
 	models.DB.Order("id desc").Offset((page - 1) * pageSize).Limit(pageSize).Find(&list)
 	ok(c, gin.H{"total": total, "list": list})
 }
+
+// DELETE /api/v1/push-records/:id 删除接收记录（级联删除关联邮件）
+func DeletePushRecord(c *gin.Context) {
+	id := atoi64(c.Param("id"))
+	var rec models.SysPushRecord
+	if err := models.DB.First(&rec, id).Error; err != nil {
+		fail(c, 404, "记录不存在")
+		return
+	}
+	models.DB.Where("push_record_id = ?", id).Delete(&models.SysMailRecord{})
+	models.DB.Delete(&rec)
+	okMsg(c, "接收记录已删除", nil)
+}
+
+// DELETE /api/v1/mail-records/:id 删除邮件记录
+func DeleteMailRecord(c *gin.Context) {
+	id := atoi64(c.Param("id"))
+	var rec models.SysMailRecord
+	if err := models.DB.First(&rec, id).Error; err != nil {
+		fail(c, 404, "记录不存在")
+		return
+	}
+	models.DB.Delete(&rec)
+	okMsg(c, "邮件记录已删除", nil)
+}
